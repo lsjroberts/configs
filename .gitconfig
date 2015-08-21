@@ -1,0 +1,19 @@
+[alias]
+	a = add
+	b = branch
+	c = commit
+	cf = config
+	co = checkout
+	s = status
+	sh = stash
+	pl = pull
+	ps = push
+[push]
+	default = simple
+[user]
+	name = Laurence Roberts
+	email = lsjroberts@outlook.com
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
