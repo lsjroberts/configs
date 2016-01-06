@@ -77,6 +77,7 @@ source $ZSH/oh-my-zsh.sh
 
 
 
+
 ##### CUSTOM STUFF
 
 
@@ -95,19 +96,31 @@ gqc() {
     g sh && g pl && g sh pop && g a -A && g c -m $1 && g ps
 }
 
-
 # Git push origin
 gpsu() {
     g ps -u origin $(git symbolic-ref --short HEAD)
 }
 
+# Git wipe everything
+gwipe() {
+    g co -- . && g reset --hard && g clean -f -d
+}
+
+# Git loop branches and confirm to delete
+gbdelete() {
+  for branch in $(git for-each-ref --format='%(refname)' refs/heads/); do
+    read "response?Delete the branch ${branch:11}? [y/N] "
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+    then
+      git branch -D ${branch:11}
+    fi
+  done
+}
+
 
 # Aliases
 alias c="clear"
-
-
-# Path
-export PATH="$PATH:$HOME/.node/bin"
+alias nah="git reset --hard; git clean -df;"
 
 
 # Default editor
@@ -116,3 +129,28 @@ export EDITOR=nano
 
 # Ruby env
 eval "$(rbenv init -)"
+
+
+# Node / NPM
+PATH="$PATH:$HOME/.node/bin"
+NPM_PACKAGES="${HOME}/.npm-packages"
+NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+PATH="$NPM_PACKAGES/bin:$PATH"
+MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+
+
+# PHP
+PATH="$PATH:$HOME/.composer/vendor/bin"
+
+
+# Python
+PATH="$PATH:/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
+
+
+# Postgres
+PATH="$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin"
+
+
+# Lua
+PATH="$PATH:$HOME/.luarocks/bin"
+alias love="/Applications/love.app/Contents/MacOS/love"
